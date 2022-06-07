@@ -3,9 +3,10 @@ import pickle
 from random import randint
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from blockchain.block import Trade, Block
-from generateblockchain import generate_blockchain, generate_trade
+from generateblockchain import generate_trade
 
 app = FastAPI()
 
@@ -100,6 +101,8 @@ def mine():
 # @app.get("/blockchain")
 # def get_blockchain():
 #     return bibicoinchain.dict()
+
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 if __name__ == '__main__':
     import uvicorn
