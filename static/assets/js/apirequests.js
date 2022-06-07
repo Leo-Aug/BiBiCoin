@@ -1,4 +1,4 @@
-var baseapi = "https://toia3r.deta.dev";
+var baseapi = "";
 
 function getBlockChainInfo(){
     var responsedata = {};
