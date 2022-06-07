@@ -95,7 +95,7 @@ def mine():
     # 清空交易信息
     trades.clear()
     # 将挖到的奖励交易加入交易信息
-    trades.append(generate_trade())
+    trades.append(Trade(sender="god", receiver="Mike", amount=1))
     return {"status": "ok"}
 
 # @app.get("/blockchain")
