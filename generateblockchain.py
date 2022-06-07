@@ -1,5 +1,6 @@
 from blockchain.block import Trade, Block, BlockChain
 from random import randint
+import pickle
 
 # 生成奖励交易
 def generate_trade():
@@ -34,4 +35,6 @@ def generate_blockchain(n):
 
 if __name__ == '__main__':
     bibicoinchain = generate_blockchain(20)
-    print(bibicoinchain.dict())
+    print(bibicoinchain.json())
+    with open("bibicoinchain.pkl", "wb") as f:
+        pickle.dump(bibicoinchain, f)

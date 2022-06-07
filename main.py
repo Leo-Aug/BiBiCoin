@@ -1,4 +1,5 @@
 from copy import deepcopy
+import pickle
 from random import randint
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,7 +17,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-bibicoinchain = generate_blockchain(20)
+
+with open("bibicoinchain.pkl", "rb") as f:
+    BiBiCoinChain = pickle.load(f)
 
 trades = []
 # 在trades中加入挖到区块的奖励交易
@@ -29,7 +32,7 @@ def get_blockchain():
     '''
     获取区块链
     '''
-    return bibicoinchain.dict()
+    return BiBiCoinChain.dict()
 
 @app.get("/gettrades")
 def get_trades():
@@ -54,7 +57,7 @@ def get_balance(user: str):
     balance = 0
 
     # 遍历所有区块，计算余额
-    for block in bibicoinchain.blocks:
+    for block in BiBiCoinChain.blocks:
         for trade in block.trades:
             if trade.sender == user:
                 balance -= trade.amount
@@ -82,12 +85,12 @@ def mine():
     '''
     # 创建一个区块
     block = Block(
-        id=len(bibicoinchain.blocks)+1, 
-        previous_hash=hash(bibicoinchain.blocks[-1].json()), 
+        id=len(BiBiCoinChain.blocks)+1, 
+        previous_hash=hash(BiBiCoinChain.blocks[-1].json()), 
         trades=deepcopy(trades)
     )
     # 将区块入链
-    bibicoinchain.blocks.append(block)
+    BiBiCoinChain.blocks.append(block)
     # 清空交易信息
     trades.clear()
     # 将挖到的奖励交易加入交易信息
